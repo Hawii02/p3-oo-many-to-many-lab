@@ -5,15 +5,14 @@ class Author:
         Author.all.append(self)
 
     def contracts(self):
-        return [contract for contract in Contract.all if contract.author == self ]
-    def books(self):
-        
-        return[book for book in Book.all if book.title == self]
+        return [contract for contract in Contract.all if contract.author == self]
+    def books(self):  
+        return[book for book in Book.all if self in book.authors()]
     
     def sign_contract(self, book, date, royalties):
         return Contract(self, book, date, royalties)
     def total_royalties(self):
-     return sum([])
+     return sum([contract.royalties for contract in self.contracts()])
     @property
     def contract(self):
         return self._contract
@@ -27,7 +26,9 @@ class Book:
     all =[]
     def __init__(self, title):
         self.title = title
+        self.authors_list = []
         Book.all.append(self)
+
     def contracts(self):
         return [contract for contract in Contract.all if contract.book == self ]
     def authors(self):
@@ -42,7 +43,10 @@ class Contract:
         self.date = date
         self.royalties = royalties
         Contract.all.append(self)
-
+    @classmethod
+    def contracts_by_date(cls):
+        return sorted(cls.all, key= lambda contract: contract.date)
+    
     @property
     def author(self):
         return self._author
