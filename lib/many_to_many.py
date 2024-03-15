@@ -6,8 +6,10 @@ class Author:
 
     def contracts(self):
         return [contract for contract in Contract.all if contract.author == self ]
-    def book(self):
-        return[contract.book for contract in Book.all if book.title == self]
+    def books(self):
+        
+        return[book for book in Book.all if book.title == self]
+    
     def sign_contract(self, book, date, royalties):
         return Contract(self, book, date, royalties)
     def total_royalties(self):
@@ -24,9 +26,12 @@ class Author:
 class Book:
     all =[]
     def __init__(self, title):
+        self.title = title
         Book.all.append(self)
     def contracts(self):
         return [contract for contract in Contract.all if contract.book == self ]
+    def authors(self):
+        return[author for author in Author.all if author.name == self]
 
 
 class Contract:
